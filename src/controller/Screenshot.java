@@ -78,7 +78,7 @@ public class Screenshot extends JDialog implements ActionListener {
         public int getHeight() { return height; }
 
         public String toString() {
-            if(name == "Default")
+            if(name.equals("Default"))
                 return name+" (window)";
             return name+" ("+width+"x"+height+")";
         }
