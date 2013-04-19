@@ -19,14 +19,20 @@
 package controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Set;
+
+import org.antlr.runtime.ANTLRFileStream;
+import org.antlr.runtime.CharStream;
+import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.TokenStream;
 import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.fraction.BigFraction;
 
 import output.Output;
+import parser.LpFileFormatLexer;
+import parser.LpFileFormatParser;
 
 import model.LP;
 
@@ -57,6 +63,23 @@ class CLI {
     
     /* Standard number of decimals when printing double precision numbers. */
     private int stdPrec = 2;
+    
+    
+    
+    /**
+     * Add a {@code LP} to the CLI. The LP is set as the current
+     * linear program.
+     * 
+     * @param lp
+     *        a linear program.
+     */
+    protected void addLp(LP lp) {
+        lps.add(p++, lp);
+        redo = 0;
+        // TODO: Fix this in another way?
+        VisLP.readScope = true;
+        VisLP.feasScope = true;
+    }
 
 
 
@@ -183,12 +206,16 @@ class CLI {
                 int e = Integer.parseInt(args[argc - 2]) - 1;
                 int l = Integer.parseInt(args[argc - 1]) - 1;
 
-                int eSize = lps.get(p-1).getNoBasic();
-                int lSize = lps.get(p-1).getNoNonBasic();
-
-                if (e < 0 || l < 0 || e > eSize || l > lSize)
-                    return "Invalid index";
-
+                int eSize = lps.get(p-1).getNoNonBasic();
+                int lSize = lps.get(p-1).getNoBasic();
+                
+                if (e < 0 || l < 0) 
+                    return "Pivot index must be positive.";
+                if (dual && (e >= lSize || l >= eSize)) 
+                    return "Invalid dual index";
+                if (!dual && (e >= eSize || l >= lSize))
+                    return "Invalid primal index";
+                
                 return pivot(e, l, dual);
             }
             catch (NumberFormatException err) {
@@ -197,31 +224,61 @@ class CLI {
         }
         return Data.SYNTAX.get(Data.pivot);
     }
-
-
-
+    
+    
+    
     private String parseRead(String[] args) {
         if (args.length == 2) {
-            File file = new File(args[1]);
-
+            CharStream stream;
             try {
-                lps.add(p, Parser.parse(file));
-                p++;
-                redo = 0;
-                // TODO: Fix this in another way?
-                VisLP.readScope = true;
-                VisLP.feasScope = true;
-                return "Read " + file + " OK.\n";
-            } catch (FileNotFoundException e) {
-                return "File " + file + " not found.\n";
-            } catch (IllegalArgumentException e) {
-                return "Read not OK. " + e.getLocalizedMessage();
+            	stream = new ANTLRFileStream(args[1]);
+
+            	LpFileFormatLexer lexer = new LpFileFormatLexer(stream);
+            	TokenStream tokenStream = new CommonTokenStream(lexer);
+            	LpFileFormatParser parser = new LpFileFormatParser(tokenStream);
+
+            	LP lp = parser.lpfromfile();
+            	addLp(lp);
+            	return "Read " + args[1] + " OK.\n";
+            } catch (Exception e2) {
+            	return "Read not OK. " + e2.getLocalizedMessage() + "\n";
             }
-        }
-        else {
+        } else {
             return Data.SYNTAX.get(Data.read);
         }
     }
+
+
+
+//    private String parseRead(String[] args) {
+//        if (args.length == 2) {
+//            File file = new File(args[1]);
+//
+//            try {
+//                LP lp = Parser.parse(file);
+//                addLp(lp);
+//                return "Read " + file + " OK.\n";
+//            } catch (Exception e1) {
+//            	CharStream stream;
+//    			try {
+//    				stream = new ANTLRFileStream(args[1]);
+//    				
+//    	    		LpFileFormatLexer lexer = new LpFileFormatLexer(stream);
+//    	    		TokenStream tokenStream = new CommonTokenStream(lexer);
+//    	    		LpFileFormatParser parser = new LpFileFormatParser(tokenStream);
+//    	    		
+//    	    		LP lp = parser.lpfromfile();
+//    	    		addLp(lp);
+//    	    		return "Read " + args[1] + " OK.\n";
+//    			} catch (Exception e2) {
+//    				return "Read not OK. " + e2.getLocalizedMessage() + "\n";
+//    			}
+//            }
+//        }
+//        else {
+//            return Data.SYNTAX.get(Data.read);
+//        }
+//    }
 
 
 
@@ -239,7 +296,7 @@ class CLI {
         String syntax = Data.SYNTAX.get(Data.replace);
 
         LP lp;
-        int size = lps.get(p-1).getNoBasic();
+        int size = lps.get(p-1).getNoNonBasic();
 
         if (args.length == 1){
             lp = lps.get(p-1).phaseOneObj();
@@ -392,7 +449,7 @@ class CLI {
         }
         
         try {
-            return Output.primal(lps.get(p-1), prec);
+            return Output.primal(lps.get(p-1), Math.max(0,Math.min(15,prec)));
         } catch (IllegalArgumentException e) {
             return e.getLocalizedMessage();
         }
@@ -411,7 +468,7 @@ class CLI {
         }
         
         try {
-            return Output.dual(lps.get(p-1), prec);
+            return Output.dual(lps.get(p-1), Math.max(0,Math.min(15,prec)));
         } catch (IllegalArgumentException e) {
             return e.getLocalizedMessage();
         }

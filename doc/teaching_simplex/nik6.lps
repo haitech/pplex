@@ -1,3 +1,0 @@
-max               x  +   y
-subject to   0.99 x  -   y <= -100 
-                 -x  +   y <= -100

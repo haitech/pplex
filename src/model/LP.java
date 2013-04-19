@@ -538,13 +538,25 @@ public class LP {
 
 
     public int getNoNonBasic() {
-        return Bi.length;
+        return Ni.length;
     }
 
 
 
     public int getNoBasic() {
-        return Ni.length;
+        return Bi.length;
+    }
+    
+    
+    
+    public int[] getNonBasicIndices() {
+        return Ni;
+    }
+    
+    
+    
+    public int[] getBasicIndices() {
+        return Bi;
     }
 
 
@@ -555,6 +567,12 @@ public class LP {
             basic[i] = x.get(Bi[i]);
         }
         return basic;
+    }
+    
+    
+    
+    public FieldVector<BigFraction> getBasis() {
+        return b_;
     }
     
     

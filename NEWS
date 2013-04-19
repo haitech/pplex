@@ -1,3 +1,30 @@
+Thu Nov 22, 2012 - 0.4.1
+==========================
+* BUG FIX: Fixed a small error where horizontal lines could be drawn wrong (or
+           not drawn at all).
+* BUG FIX: Fixed a bug where the axes would not be drawn green if they were
+           degenerate.
+* MISC: The implementation of the coordinate system has been created
+        as a separate library, jcoolib, making its development
+        independent of pplex' development. This has resulted in
+        some minor visual changes in pplex, e.g. a grid.
+* MISC: ProGuard is now used to shrink pplex' jar files significantly.
+        
+
+Mon Oct 15, 2012 - 0.4.0
+==========================
+* NEW FEATURE: It is now possible to save the image of the feasible region
+               at a resolution of your choice as a PNG file.
+* NEW FEATURE: The font size in the left console can now be changed.
+* MISC: A pplex applet. It can be compiled with 'ant applet'.
+* MISC: Lines representing slack variables that are degenerate in
+        the incumbent primal dictionary are now colored green.
+* MISC: The gradient effect on unbounded feasible regions
+        should now look even better.
+* MISC: Lots of new example files, and some have been renamed to more
+        descriptive names.
+
+
 Wed Sep 12, 2012 - 0.3.2
 ==========================
 * BUG FIX: Fixed a bug that caused resizing the window to zero

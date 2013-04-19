@@ -1,23 +1,4 @@
-pplex readme
-Last updated:    2012-11-22
-Release version: 0.4.1
-------------------------------------------------------------------------
-
-Table of contents
------------------
-1.0) About
-2.0) Contacting
-* 2.1 Reporting Bugs
-3.0) Installing pplex
-* 3.1 Running pplex
-4.0) Compiling pplex
-* 4.1 Applet
-5.0) Documentation
-
-
-
-1.0) About
----- -----
+# About
 pplex is an application that can interpret linear programs (LP) and show
 how the LP dictionary evolves throughout the execution of the simplex method.
 
@@ -29,57 +10,43 @@ the Free Software Foundation, either version 3 of the License, or
 pplex uses Apache Commons Math library for handling matrices. It is released
 under the Apache License, Version 2.0. See lib/LICENSE.TXT for more information.
 
+![pplex supports visualization](https://raw.github.com/andern/pplex/master/doc/teaching_simplex/ex_gui3.png)
 
+[Try the pplex applet!](http://pplex.ii.uib.no)
 
-2.0) Contacting
----- ----------
-The pplex homepage is http://andern.github.com/pplex
+# Documentation
+Documentation on how to use pplex can be found [here](https://raw.github.com/andern/pplex/master/doc/pplex_intro.pdf).
 
-
-2.1) Reporting Bugs
----- --------------
+## Reporting Bugs
 GitHub's issue tracker is used for tracking bugs of pplex. Before submitting a
 bug you should make sure that you are running the latest version of pplex, and
 that the bug has not already been submitted to the tracker on GitHub.
 
-
-
-3.0) Installing pplex
----- ----------------
+# Installing pplex
 If you want to try pplex before installing it, you can try it as an applet by
 visiting http://pplex.ii.uib.no. It has most of the functionality
 of pplex (but you cannot read your own files.)
 
 Running pplex requires Java Runtime Environment installed on your computer.
 
-1. Download the newest version of pplex from
-   http://folk.uib.no/xif001/pplex/pplex.jar and put it anywhere you like.
-2. Double-click on pplex.jar.
+1. Download the newest version of pplex from one of the links above.
+2. Extract the archive.
+3. Double-click on pplex.jar.
+4. (Getting started) Type read input/vdb2.8.lps in pplex' console.
 
-
-(Optional) Getting started:
-3. Download test.lps from http://folk.uib.no/xif001/pplex/test.lps and
-   put it in the same directory as pplex.jar.
-4. Type 'read test.lps' in pplex' console.
-
-
-3.1) Running pplex
----- -------------
+## Running pplex
 pplex starts in visual mode by default. This is only relevant for linear
 programs with two variables. pplex can easily be run without a graphical
 interface in a terminal window by passing the '-nogui' argument like this:
   `java -jar pplex.jar -nogui`
 
-
-
-4.0) Compiling pplex
----- ---------------
+# Compiling pplex
 Compiling pplex requires:
 * Java Development Kit
 * Apache Ant
 
 To compile pplex you first need to download the source code of pplex. This
-can be done from the website (see 2.0) or by cloning the repository.
+can be done from the website or by cloning the repository.
 
 To clone the repository you need git installed on your system. Cloning
 the repository is done by typing the following in a terminal:
@@ -94,18 +61,10 @@ To compile the sources of pplex and build a runnable jar, run
   or simply
   `ant`
 
-
-4.1) Applet
----- ------
+## Applet
 pplex can be compiled as an applet by running
   `ant applet`
 in the pplex directory.
 
 See applet.html in the pplex directory for an example
 on how to deploy the applet on your own website.
-
-
-
-5.0) Documentation
----- -------------
-Documentation on how to use pplex can be found in doc/pplex_intro.pdf

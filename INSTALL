@@ -3,7 +3,8 @@ Compiling pplex requires:
 * Apache Ant
 
 To compile pplex you first need to download the source code of pplex. This
-can be done from the website (see 2.0) or by cloning the repository.
+can be done from the website (http://andern.github.com/pplex) or by cloning
+the repository.
 
 To clone the repository you need git installed on your system. Cloning
 the repository is done by typing the following in a terminal:
@@ -17,3 +18,14 @@ To compile the sources of pplex and build a runnable jar, run
   `ant jar`
   or simply
   `ant`
+
+
+
+APPLET
+------
+pplex can be compiled as an applet by running
+  `ant applet`
+in the pplex directory.
+
+See applet.html in the pplex directory for an example
+on how to deploy the applet on your own website.
